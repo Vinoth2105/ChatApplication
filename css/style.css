@@ -1,0 +1,66 @@
+#header {
+    background-color: #04B45F;
+    color:white;
+    text-align:right;
+    padding: 10px;
+	height:80px;
+}
+
+html,body{
+    width:75%;
+    height:75%;
+}
+
+body{
+    position:relative;
+}
+
+#wrapper{
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    border:1px solid #333;      
+}
+
+#upperPanel{
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:100px;
+}
+
+#chat{
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:200px; 
+    background:#E3F6CE;  
+    overflow:auto;    
+}
+
+#friends{
+    position: absolute;
+    top:0;
+    bottom:0;
+    width:200px;
+    right:0; 
+    background:#58FAD0; 
+    overflow:auto;   
+}
+
+#friends ul{
+    text-align:left;
+}
+
+#bottomPanel{
+    height: 100px;
+    background:#084B8A;
+    position:absolute;
+    bottom:0px;
+    left:0px;
+    right:0px;
+}

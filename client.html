@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta charset="utf-8"> 
+		<title>OFS - Chat Application</title>
+		<!--<link rel="stylesheet" type="text/css" href="http://localhost:7001/ChatApp/css/style.css" />-->
+		<style type="text/css">
+			#header {
+				background-color: #04B45F;
+				color:white;
+				text-align:right;
+				padding: 10px;
+				height:80px;
+			}
+
+			html,body{
+				width:80%;
+				height:80%;
+				font-family: Arial, Helvetica, sans-serif;
+				font-size:14px;
+			}
+
+			body{
+				position:relative;
+			}
+
+			#wrapper{
+				position:absolute;
+				top:0;
+				bottom:0;
+				left:0;
+				right:0;
+				border:1px solid #333;      
+			}
+
+			#upperPanel{
+				position: absolute;
+				top:0;
+				left:0;
+				right:0;
+				bottom:100px;
+			}
+
+			#chat{
+				position: absolute;
+				top:0;
+				bottom:0;
+				left:0;
+				right:200px; 
+				background:#E3F6CE;  
+				overflow:auto;    
+			}
+
+			#friends{
+				position: absolute;
+				top:0;
+				bottom:0;
+				width:200px;
+				right:0; 
+				background:#58FAD0; 
+				overflow:auto;   
+			}
+
+			#friends ul{
+				text-align:left;
+			}
+
+			#bottomPanel{
+				height: 100px;
+				background:#F5A9BC;
+				position:absolute;
+				bottom:0px;
+				left:0px;
+				right:0px;
+			}
+			.tftextinput{
+				margin: 0;
+				padding: 5px 15px;
+				font-family: Arial, Helvetica, sans-serif;
+				font-size:14px;
+				border:1px solid #0076a3; border-right:0px;
+				border-top-left-radius: 5px 5px;
+				border-bottom-left-radius: 5px 5px;
+			}
+			.tfbutton {
+				margin: 0;
+				padding: 3px 3px;
+				font-family: Arial, Helvetica, sans-serif;
+				font-size:14px;
+				outline: none;
+				cursor: pointer;
+				text-align: center;
+				text-decoration: none;
+				color: #ffffff;
+				border: solid 1px #0076a3; border-right:0px;
+				background: #0095cd;
+				background: -webkit-gradient(linear, left top, left bottom, from(#00adee), to(#0078a5));
+				background: -moz-linear-gradient(top,  #00adee,  #0078a5);
+				border-top-right-radius: 5px 5px;
+				border-bottom-right-radius: 5px 5px;
+			}
+			.tfbutton:hover {
+				text-decoration: none;
+				background: #007ead;
+				background: -webkit-gradient(linear, left top, left bottom, from(#0095cc), to(#00678e));
+				background: -moz-linear-gradient(top,  #0095cc,  #00678e);
+			}
+			</style>
+        <script src="/socket.io/socket.io.js"></script>
+        <script type="text/javascript">
+            var server = io.connect("127.0.0.1:7001");
+			server.on('connect', function(data){
+				var name = prompt("Enter your name to join the chat.")
+				server.emit('join',name);
+			});
+			server.on('join_message', function(data){
+				var join_message = document.getElementById("chat").innerHTML;
+				if(join_message == ""){
+					join_message = data;
+				}else{
+					join_message +=  "<br>"+data;
+				}
+				document.getElementById("chat").innerHTML = "<I>"+join_message+"</I>";
+			});			
+			server.on('message_from_server', function(data){
+				var chatLog = document.getElementById("chat").innerHTML;
+				document.getElementById("message_input").value = "";
+				if(chatLog == ""){
+					chatLog = data;
+				}else{
+					chatLog +=  "<br>"+data;
+				}
+				document.getElementById("chat").innerHTML = chatLog;			
+			});
+			server.on('chatter_list', function(data){
+				var chatLog = document.getElementById("friends").innerHTML;	
+				if(chatLog == ""){
+					chatLog = data;
+				}else{
+					chatLog +=  "<br>"+data;
+				}
+				document.getElementById("friends").innerHTML = chatLog;			
+			});
+			
+			function sendMessage(){
+				var chatMessage = document.getElementById("message_input").value;			
+				
+				server.emit('message_from_client', chatMessage)
+			}
+			
+        </script>
+    </head>
+  
+	<body>
+	<div id="header">
+		<div width="100%" style="float:left;"><h1>Chat Application</h1></div>			
+	</div>	
+	<div id="wrapper">
+		<div id="upperPanel">
+			<div id="friends">
+			</div>	
+			<div id="chat">				
+			</div>			
+		</div>
+		<div id="bottomPanel">
+			 <input type="text" size="75" id="message_input" class="tftextinput"></input>
+			 <input type="button" onclick="sendMessage()" value="Send" class="tfbutton"></input>
+		</div>
+	</div>​​​​​​​​​​​​	
+</body>
+	
+</html>
